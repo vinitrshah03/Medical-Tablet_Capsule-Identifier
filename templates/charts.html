@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Model Analytics Dashboard</title>
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; letter-spacing: 1px; }
+        .chart-card { 
+            border: none; 
+            border-radius: 15px; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+            background: white;
+            height: 100%;
+        }
+        .chart-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+        }
+        .chart-img { 
+            border-radius: 8px; 
+            margin-top: 10px; 
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        .metric-badge { font-size: 0.9rem; padding: 8px 15px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow">
+        <div class="container">
+            <a class="navbar-brand" href="/">💊 PillAI Diagnostics</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link active" href="/charts">Model Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-0">Model Performance Dashboard</h2>
+                <p class="text-muted small">Real-time metrics for CNN + OCR Fusion & Human Validation</p>
+            </div>
+            <div class="d-flex gap-3 align-items-center">
+                <span class="badge bg-primary metric-badge">System RMSE: {{ rmse }}</span>
+                <form action="/clear_history" method="POST" onsubmit="return confirm('This will reset all session analytics and feedback. Proceed?');">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Clear History</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <div class="col-md-6">
+                <div class="card chart-card shadow-sm p-4">
+                    <h5 class="card-title text-dark"><i class="bi bi-graph-up text-primary"></i> Prediction Stability Trend</h5>
+                    <p class="card-subtitle text-muted small">Tracks how confident the model remains across multiple tests.</p>
+                    <img src="{{ url_for('static', filename='charts/trend_chart.png') }}" class="chart-img" alt="Trend Chart">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card chart-card shadow-sm p-4">
+                    <h5 class="card-title text-dark"><i class="bi bi-person-check text-success"></i> Human-Verified Accuracy</h5>
+                    <p class="card-subtitle text-muted small">Distribution of user-confirmed correct matches from the Top-3 results.</p>
+                    <img src="{{ url_for('static', filename='charts/user_feedback_pie.png') }}" class="chart-img" alt="User Feedback Pie Chart">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card chart-card shadow-sm p-4">
+                    <h5 class="card-title text-dark"><i class="bi bi-grid-3x3 text-warning"></i> Class Similarity (Confusion Matrix)</h5>
+                    <p class="card-subtitle text-muted small">Visualizes labels the model is frequently confusing based on visual features.</p>
+                    <img src="{{ url_for('static', filename='charts/confusion_heatmap.png') }}" class="chart-img" alt="Confusion Matrix">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card chart-card shadow-sm p-4">
+                    <h5 class="card-title text-dark"><i class="bi bi-cpu text-info"></i> System Architecture</h5>
+                    <p class="card-subtitle text-muted small">Current configuration of the deployed neural network and fusion logic.</p>
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Architecture <span>MobileNetV3-Large</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Logic Type <span class="badge bg-info text-dark">Multimodal Fusion</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            OCR Engine <span>EasyOCR (Dosage Mapping)</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Inference Status 
+                            {% if rmse < 10 %}
+                            <span class="text-success fw-bold"><i class="bi bi-check-all"></i> Optimized</span>
+                            {% else %}
+                            <span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle"></i> Calibrating</span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Confidence Gap (Residuals)
+                            <a href="#" class="btn btn-sm btn-link p-0" data-bs-toggle="modal" data-bs-target="#residualModal">View Residuals</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-5 p-4 bg-white rounded shadow-sm mb-5 border-start border-4 border-primary">
+            <h6 class="fw-bold"><i class="bi bi-lightbulb"></i> Interpretation Guide for Dissertation Research</h6>
+            <p class="text-muted small mb-0">
+                The <strong>Human-Verified Accuracy</strong> chart provides the ground-truth validation required for Section 8.2. Compare this with the 
+                <strong>Stability Trend</strong>: If the trend is high but user verification is low, the model is "overconfident." 
+                The <strong>RMSE</strong> (Root Mean Square Error) quantifies the distance between expected and actual confidence—lower values indicate a more stable, reliable system.
+            </p>
+        </div>
+    </div>
+
+    <div class="modal fade" id="residualModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confidence Gap (Residuals)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="{{ url_for('static', filename='charts/residual_chart.png') }}" class="w-100" alt="Residual Chart">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
