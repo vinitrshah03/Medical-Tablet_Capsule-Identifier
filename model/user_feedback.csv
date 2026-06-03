@@ -1,0 +1,22 @@
+timestamp,top_1_name,user_correct_indices,was_helpful
+2026-03-14 15:37:33,ramipril 5 MG Oral Capsule,0|1|2,No
+2026-03-14 15:39:34,lovastatin 20 MG Oral Tablet,0|1,Yes
+2026-03-14 15:41:13,flurbiprofen 100 MG Oral Tablet,0,Yes
+2026-03-14 15:45:57,diclofenac sodium 75 MG Delayed Release Oral Tablet,0|1|2,No
+2026-03-14 15:48:25,24 HR diclofenac sodium 100 MG Extended Release Oral Tablet,0,Yes
+2026-03-14 15:51:39,lamotrigine 200 MG Oral Tablet,0,Yes
+2026-03-14 15:54:38,ranitidine 300 MG Oral Tablet,0|1|2,No
+2026-03-23 02:23:25,amlodipine 2.5 MG / benazepril hydrochloride 10 MG Oral Capsule,0|1|2,No
+2026-03-23 02:25:44,cyclobenzaprine hydrochloride 10 MG Oral Tablet,0|1|2,No
+2026-03-23 02:32:09,tamoxifen 20 MG Oral Tablet,0,Yes
+2026-03-23 02:35:05,metoprolol tartrate 100 MG Oral Tablet,0,Yes
+2026-03-23 02:36:42,ropinirole 1 MG Oral Tablet [Requip],0,Yes
+2026-03-25 13:41:52,24 HR nifedipine 30 MG Extended Release Oral Tablet,0,Yes
+2026-03-25 13:44:51,sucralfate 1000 MG Oral Tablet,0,Yes
+2026-03-25 13:47:33,{7 (ethinyl estradiol 0.01 MG Oral Tablet) / 84 (ethinyl estradiol 0.02 MG / levonorgestrel 0.1 MG Oral Tablet) } Pack [LoSeasonique],0,Yes
+2026-03-25 13:49:03,paroxetine hydrochloride 30 MG Oral Tablet,0|1|2,No
+2026-03-25 13:52:37,bethanechol chloride 10 MG Oral Tablet,0,Yes
+2026-03-25 16:54:24,pravastatin sodium 10 MG Oral Tablet,0,Yes
+2026-04-30 15:35:29,ethacrynic acid 25 MG Oral Tablet [Edecrin],0,Yes
+2026-04-30 15:36:52,quinapril 20 MG Oral Tablet,0,Yes
+2026-04-30 15:47:38,temazepam 15 MG Oral Capsule,0,No
